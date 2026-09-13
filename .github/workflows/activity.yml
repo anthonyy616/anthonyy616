@@ -1,0 +1,46 @@
+# Refreshes the "Recent Activity" section in README.md once a week from the
+# public GitHub events API (no token, no third-party service).
+#
+# Security notes:
+#   - Only uses the built-in GITHUB_TOKEN; no secrets required.
+#   - Requests only `contents: write`, the minimum needed to commit the
+#     README update. Nothing else is touched.
+#   - Renderer is a stdlib-only Python script (scripts/render_activity.py).
+name: Update Recent Activity
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # weekly, Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: readme-activity
+  cancel-in-progress: false
+
+jobs:
+  update-activity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.4.0
+        with:
+          fetch-depth: 1
+
+      - name: Render activity into README
+        run: python3 scripts/render_activity.py
+
+      - name: Commit activity update
+        run: |
+          if [[ -n "$(git status --porcelain README.md)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add README.md
+            git commit -m "docs: refresh recent activity feed"
+            git push
+          else
+            echo "No activity changes to commit."
+          fi

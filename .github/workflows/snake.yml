@@ -1,0 +1,43 @@
+# Regenerates the contribution snake animation and publishes it to the
+# `output` branch (never touches `main`). The README references the SVGs from
+# that branch, so no generated artifacts are committed to main.
+#
+# Requirements:
+#   - Repository → Settings → Actions → General → Workflow permissions must
+#     allow "Read and write permissions" (needed only to push the `output`
+#     branch with GITHUB_TOKEN).
+name: Generate Contribution Snake
+
+on:
+  schedule:
+    - cron: "30 0 * * *" # daily, 00:30 UTC
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "README.md"
+      - ".github/workflows/snake.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Generate snake SVGs (dark + light)
+        uses: Platane/snk@v3.5.0
+        with:
+          github_user_name: anthonyy616
+          outputs: |
+            dist/github-snake.svg?color_snake=%2358a6ff&color_dots=%23161b22,%23033a16,%23196c2e,%232ea043,%2356d364
+            dist/github-snake-white.svg?color_snake=%232f81f7&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e,%23216e39
+
+      - name: Publish to output branch
+        uses: crazy-max/ghaction-github-pages@v4.2.0
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
