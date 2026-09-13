@@ -1,4 +1,4 @@
-# Hi, I'm Anthony 👋
+# Hi, I'm Anthony 👋🏾
 
 **Computer Engineering** student building intelligent systems at the intersection of:
 
