@@ -54,38 +54,40 @@ jobs:
           set -euo pipefail
           DIST="dist"
           TMP="output-branch"
+          SVG_COUNT=$(ls -1 "$DIST"/*.svg 2>/dev/null | wc -l)
+          echo "SVG count in dist/: $SVG_COUNT"
+          [ "$SVG_COUNT" -gt 0 ]
 
           if [ ! -d "$TMP/.git" ]; then
-            echo "Creating 'output' branch for the first time..."
+            echo "Initializing 'output' branch for the first time..."
             git init -b output "$TMP"
             cd "$TMP"
             echo "# Contribution snake animation (auto-generated)" > README.md
             git add README.md
             git commit -m "first commit on output branch"
             git push origin output
-            echo "Initialized output branch at origin/output."
+            echo "Pushed initial commit to origin/output"
           fi
 
-          # Bring output branch up locally
           cd "$TMP"
           if git rev-parse --verify origin/output >/dev/null 2>&1; then
             git fetch origin output
             git reset --hard origin/output
-          else
-            git branch -m output 2>/dev/null || true
           fi
 
-          # Copy generated SVGs
           cp "$DIST"/*.svg . 2>/dev/null || true
-          git checkout --orphan output 2>/dev/null || true
-          git add *.svg
+          if git checkout --orphan output 2>/dev/null; then
+            git add *.svg
+          else
+            echo "switching to orphan branch failed; staging all instead"
+            git add *
+          fi
 
           if git diff --cached --quiet; then
             echo "Snake SVGs are unchanged — nothing to publish."
             exit 0
           fi
 
-          msg="Regenerate contribution snake animation for anthonyy616 (auto)"
-          git commit -m "$msg" --no-verify
+          git commit -m "Regenerate contribution snake animation for anthonyy616 (auto)" --no-verify
           git push origin output --force
           echo "Published to output branch."
