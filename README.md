@@ -11,7 +11,7 @@ Data → Machine Learning → Computer Vision → Embedded Systems
 - 🔬 Final-year project: **[Contactless Vital Signs Monitoring System](https://github.com/anthonyy616/health-project)** — computer vision + rPPG + planned ESP32-S3 wearable
 - 🧮 Background: **Cybersecurity internship** and automation/data work in Python
 - 🖥️ Daily drivers: Linux, Python, C, Docker, Git
-- 📫 Reach me: **[placeholder — LinkedIn]**
+- 📫 Reach me: [LinkedIn](https://www.linkedin.com/in/anthony-ogbuah-995957339) · [anthonyogbuah@gmail.com](mailto:anthonyogbuah@gmail.com) · [Portfolio](https://anthonyy616.vercel.app/)
 
 <br>
 
@@ -99,7 +99,7 @@ Network traffic anomaly detection applying ML algorithms to identify suspicious 
 <details>
 <summary><b>🧵 Data Engineering</b></summary>
 
-- **Languages & storage:** Python, SQL, PostgreSQL
+- **Languages & Tech Stack** Python, SQL, PostgreSQL, AWS Services
 - **Processing:** Pandas, NumPy, ETL/ELT design, delta loading, watermark-based sync
 - **Orchestration:** Dagster jobs and schedules, dbt staging → mart layers
 - **Ingestion:** REST APIs, S3 event-triggered pipelines, file schema validation
@@ -161,9 +161,9 @@ Network traffic anomaly detection applying ML algorithms to identify suspicious 
 
 ## 🧰 Tech Stack
 
-**Languages:** Python · C/C++ · SQL · Rust · JavaScript/TypeScript
+**Languages:** Python · C/C++ · SQL · Rust · TypeScript
 
-**Data:** PostgreSQL · Pandas · NumPy · Jupyter · dbt
+**Data:** PostgreSQL · Pandas · NumPy · Jupyter · dbt · Kafka
 
 **AI / ML:** PyTorch · Scikit-learn · OpenCV · MediaPipe
 
@@ -238,7 +238,6 @@ Network traffic anomaly detection applying ML algorithms to identify suspicious 
 ## 📫 Connect
 
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/anthonyy616)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn_Add_Me-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](#)
-[![Email](https://img.shields.io/badge/Email_Placeholder-D14836?style=for-the-badge&logo=gmail&logoColor=white)](#)
-
-> **⚠️ Placeholders:** LinkedIn and email are not configured yet. Send me the real URLs and I'll wire them in.
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/anthony-ogbuah-995957339)
+[![Email](https://img.shields.io/badge/Email-anthonyogbuah%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:anthonyogbuah@gmail.com)
+[![Portfolio](https://img.shields.io/badge/Portfolio-anthonyy616.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://anthonyy616.vercel.app/)
