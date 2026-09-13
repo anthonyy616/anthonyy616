@@ -92,6 +92,10 @@ Music recommendation engine that predicts "sonic" characteristics from lyrics al
 Network traffic anomaly detection applying ML algorithms to identify suspicious patterns — where my cybersecurity internship interests meet applied machine learning.
 `Python` `ML` `Network Security`
 
+### 📊 [antlyst](https://github.com/anthonyy616/antlyst) — *Data Analytics / Visualization*
+Data visualization tool (from “anthony + analyst”): users upload CSV files and get data visualization dashboards in any dashboard style in under a minute. Bridges analytics and ML-style plots in a quick, no-setup workflow.
+`TypeScript` `Data Visualization` `CSV Analytics` `Dashboards`
+
 <br>
 
 ## 🔧 Engineering Domains
