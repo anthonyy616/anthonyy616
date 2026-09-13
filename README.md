@@ -10,7 +10,7 @@ Data → Machine Learning → Computer Vision → Embedded Systems
 
 - 🔬 Final-year project: **[Contactless Vital Signs Monitoring System](https://github.com/anthonyy616/health-project)** — computer vision + rPPG + planned ESP32-S3 wearable
 - 🧮 Background: **Cybersecurity internship** and automation/data work in Python
-- 🖥️ Daily drivers: Linux, Python, C, Docker, Git
+- 🖥️ Daily drivers: Linux, Python, C++, SQL, Docker, Git
 - 📫 Reach me: [LinkedIn](https://www.linkedin.com/in/anthony-ogbuah-995957339) · [anthonyogbuah@gmail.com](mailto:anthonyogbuah@gmail.com) · [Portfolio](https://anthonyy616.vercel.app/)
 
 <br>
