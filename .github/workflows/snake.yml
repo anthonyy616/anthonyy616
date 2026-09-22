@@ -19,7 +19,7 @@ on:
       - ".github/workflows/snake.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   generate:
@@ -34,60 +34,43 @@ jobs:
             dist/github-snake.svg?color_snake=%2358a6ff&color_dots=%23161b22,%23033a16,%23196c2e,%232ea043,%2356d364
             dist/github-snake-white.svg?color_snake=%232f81f7&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e,%23216e39
 
-      # Platane/snk can push via its npm wrapper only when the job's GITHUB_TOKEN
-      # has write permission to the output branch, and job logs are not visible to
-      # non-collaborators — so when it fails, you can't see why. The README for this
-      # action explicitly recommends the manual checkout + git push path, which is
-      # what we use here. The `output` branch is created on the first successful run.
-      - name: Checkout output branch (create if missing)
-        uses: actions/checkout@v4.4.0
-        with:
-          ref: output
-          path: output-branch
-          token: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true
-
       - name: Publish snake SVGs to output branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          DIST="dist"
-          TMP="output-branch"
-          SVG_COUNT=$(ls -1 "$DIST"/*.svg 2>/dev/null | wc -l)
-          echo "SVG count in dist/: $SVG_COUNT"
-          [ "$SVG_COUNT" -gt 0 ]
-
-          if [ ! -d "$TMP/.git" ]; then
-            echo "Initializing 'output' branch for the first time..."
-            git init -b output "$TMP"
-            cd "$TMP"
-            echo "# Contribution snake animation (auto-generated)" > README.md
-            git add README.md
-            git commit -m "first commit on output branch"
-            git push origin output
-            echo "Pushed initial commit to origin/output"
+          shopt -s nullglob
+          svgs=("${GITHUB_WORKSPACE}/dist/"*.svg)
+          echo "SVG count in dist/: ${#svgs[@]}"
+          if [ "${#svgs[@]}" -eq 0 ]; then
+            echo "No SVG files were generated in ${GITHUB_WORKSPACE}/dist."
+            exit 1
           fi
 
-          cd "$TMP"
-          if git rev-parse --verify origin/output >/dev/null 2>&1; then
-            git fetch origin output
-            git reset --hard origin/output
-          fi
+          remote="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          workdir="$(mktemp -d)"
 
-          cp "$DIST"/*.svg . 2>/dev/null || true
-          if git checkout --orphan output 2>/dev/null; then
-            git add *.svg
+          git init "$workdir"
+          git -C "$workdir" config user.name "github-actions[bot]"
+          git -C "$workdir" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C "$workdir" remote add origin "$remote"
+
+          if git -C "$workdir" ls-remote --exit-code --heads origin output >/dev/null 2>&1; then
+            git -C "$workdir" fetch --depth=1 origin output
+            git -C "$workdir" checkout -B output FETCH_HEAD
           else
-            echo "switching to orphan branch failed; staging all instead"
-            git add *
+            git -C "$workdir" checkout --orphan output
           fi
 
-          if git diff --cached --quiet; then
+          find "$workdir" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp "${svgs[@]}" "$workdir"/
+          git -C "$workdir" add -A
+
+          if git -C "$workdir" diff --cached --quiet; then
             echo "Snake SVGs are unchanged — nothing to publish."
             exit 0
           fi
 
-          git commit -m "Regenerate contribution snake animation for anthonyy616 (auto)" --no-verify
-          git push origin output --force
+          git -C "$workdir" commit -m "Regenerate contribution snake animation for anthonyy616 (auto)" --no-verify
+          git -C "$workdir" push origin output --force
           echo "Published to output branch."
